@@ -13,7 +13,13 @@ export default function Leaderboard() {
     useEffect(() => {
         async function fetchLeaderboard() {
             try {
-                const firestoreData = await getLeaderboard(20);
+                // Try to load from Firestore with a 3-second timeout
+                const fetchBoard = getLeaderboard(20);
+                const timeout = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error("Firestore fetch timeout")), 3000)
+                );
+
+                const firestoreData = await Promise.race([fetchBoard, timeout]);
                 if (firestoreData && firestoreData.length > 0) {
                     // Ensure all required fields exist with defaults
                     const normalized = firestoreData.map((u, i) => ({

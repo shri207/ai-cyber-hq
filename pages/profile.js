@@ -15,32 +15,43 @@ export default function Profile() {
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Try to load from Firestore
-                let firestoreProfile = await getUserProfile(user.uid);
+                try {
+                    // Try to load from Firestore with a 3-second timeout
+                    const fetchProfile = getUserProfile(user.uid);
+                    const timeout = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error("Firestore fetch timeout")), 3000)
+                    );
 
-                if (!firestoreProfile) {
-                    // First login — create a profile in Firestore from Auth data
-                    const newProfile = {
-                        username: user.displayName || user.email?.split("@")[0] || "Operator",
-                        email: user.email || "",
-                        avatar: "🧑‍💻",
-                        joinDate: new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" }),
-                        points: 0,
-                        rank: 999,
-                        eventsAttended: 0,
-                        streak: 0,
-                        badges: [],
-                        skills: [],
-                        bio: "SENTINEX operative ready for deployment.",
-                        team: null,
-                        github: "",
-                        linkedin: "",
-                    };
-                    await createOrUpdateUserProfile(user.uid, newProfile);
-                    firestoreProfile = { id: user.uid, ...newProfile };
+                    let firestoreProfile = await Promise.race([fetchProfile, timeout]);
+
+                    if (!firestoreProfile) {
+                        // First login — create a profile in Firestore from Auth data
+                        const newProfile = {
+                            username: user.displayName || user.email?.split("@")[0] || "Operator",
+                            email: user.email || "",
+                            avatar: "🧑‍💻",
+                            joinDate: new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+                            points: 0,
+                            rank: 999,
+                            eventsAttended: 0,
+                            streak: 0,
+                            badges: [],
+                            skills: [],
+                            bio: "SENTINEX operative ready for deployment.",
+                            team: null,
+                            github: "",
+                            linkedin: "",
+                        };
+                        await createOrUpdateUserProfile(user.uid, newProfile);
+                        firestoreProfile = { id: user.uid, ...newProfile };
+                    }
+
+                    setProfile(firestoreProfile);
+                } catch (error) {
+                    console.error("Firestore error (possibly blocked):", error);
+                    // Fall back to mock NeoCypher profile on network error
+                    setProfile(mockProfile);
                 }
-
-                setProfile(firestoreProfile);
             } else {
                 // Not logged in — use mock data
                 setProfile(mockProfile);
