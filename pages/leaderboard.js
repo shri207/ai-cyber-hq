@@ -1,16 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import LeaderboardTable from "@/components/ui/LeaderboardTable";
 import { mockLeaderboard, badges as badgeData, pointSystem } from "@/lib/mockData";
+import { getLeaderboard } from "@/lib/firestore";
 
 export default function Leaderboard() {
     const [tab, setTab] = useState("rankings");
+    const [leaderboardData, setLeaderboardData] = useState(mockLeaderboard);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchLeaderboard() {
+            try {
+                const firestoreData = await getLeaderboard(20);
+                if (firestoreData && firestoreData.length > 0) {
+                    // Ensure all required fields exist with defaults
+                    const normalized = firestoreData.map((u, i) => ({
+                        id: u.id,
+                        rank: i + 1,
+                        username: u.username || u.email?.split("@")[0] || "Unknown",
+                        avatar: u.avatar || "🧑‍💻",
+                        points: u.points || 0,
+                        badges: u.badges || [],
+                        eventsAttended: u.eventsAttended || 0,
+                        streak: u.streak || 0,
+                    }));
+                    setLeaderboardData(normalized);
+                }
+                // If Firestore is empty, keep mock data
+            } catch (err) {
+                console.error("Leaderboard fetch error:", err);
+                // Fall back to mock data on error
+            }
+            setLoading(false);
+        }
+        fetchLeaderboard();
+    }, []);
 
     return (
         <>
             <Head>
-                <title>Leaderboard — AI × CYBER HQ</title>
+                <title>Leaderboard — SENTINEX</title>
                 <meta name="description" content="Track rankings, points, and achievement badges." />
             </Head>
 
@@ -18,35 +49,42 @@ export default function Leaderboard() {
                 {/* Header */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
                     <h1 className="text-4xl font-bold text-white mb-2">
-                        🏆 <span style={{ color: "#00f7ff" }}>Leaderboard</span>
+                        🏆 <span style={{ color: "#39FF14" }}>Leaderboard</span>
                     </h1>
                     <p className="text-sm" style={{ color: "#64748b" }}>Top community members ranked by points and achievements</p>
                 </motion.div>
 
                 {/* Top 3 podium */}
-                <div className="grid grid-cols-3 gap-4 mb-10 max-w-lg mx-auto">
-                    {[1, 0, 2].map((idx) => {
-                        const user = mockLeaderboard[idx];
-                        if (!user) return null;
-                        const isFirst = idx === 0;
-                        return (
-                            <motion.div
-                                key={user.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: idx * 0.15 }}
-                                className={`glass-card p-4 text-center ${isFirst ? "md:-mt-4" : ""}`}
-                                style={isFirst ? { border: "1px solid rgba(255,170,0,0.3)", boxShadow: "0 0 30px rgba(255,170,0,0.08)" } : {}}
-                            >
-                                <div className="text-4xl mb-2">{user.avatar}</div>
-                                <div className="text-2xl mb-1">{idx === 0 ? "🥇" : idx === 1 ? "🥈" : "🥉"}</div>
-                                <div className="text-sm font-bold text-white">{user.username}</div>
-                                <div className="text-lg font-black mt-1" style={{ color: "#00ff9d" }}>{user.points.toLocaleString()}</div>
-                                <div className="text-[10px] uppercase tracking-wider" style={{ color: "#64748b" }}>points</div>
-                            </motion.div>
-                        );
-                    })}
-                </div>
+                {loading ? (
+                    <div className="text-center py-12">
+                        <div className="text-4xl mb-4 animate-pulse">⚡</div>
+                        <p className="text-sm" style={{ color: "#39FF14" }}>Loading rankings...</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-3 gap-4 mb-10 max-w-lg mx-auto">
+                        {[1, 0, 2].map((idx) => {
+                            const user = leaderboardData[idx];
+                            if (!user) return null;
+                            const isFirst = idx === 0;
+                            return (
+                                <motion.div
+                                    key={user.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.15 }}
+                                    className={`glass-card p-4 text-center ${isFirst ? "md:-mt-4" : ""}`}
+                                    style={isFirst ? { border: "1px solid rgba(255,170,0,0.3)", boxShadow: "0 0 30px rgba(255,170,0,0.08)" } : {}}
+                                >
+                                    <div className="text-4xl mb-2">{user.avatar}</div>
+                                    <div className="text-2xl mb-1">{idx === 0 ? "🥇" : idx === 1 ? "🥈" : "🥉"}</div>
+                                    <div className="text-sm font-bold text-white">{user.username}</div>
+                                    <div className="text-lg font-black mt-1" style={{ color: "#00ff9d" }}>{(user.points || 0).toLocaleString()}</div>
+                                    <div className="text-[10px] uppercase tracking-wider" style={{ color: "#64748b" }}>points</div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                )}
 
                 {/* Tabs */}
                 <div className="flex gap-2 mb-6">
@@ -60,9 +98,9 @@ export default function Leaderboard() {
                             onClick={() => setTab(t.id)}
                             className="px-4 py-2 rounded-lg text-xs font-semibold transition-all"
                             style={{
-                                background: tab === t.id ? "rgba(0,247,255,0.15)" : "rgba(255,255,255,0.03)",
-                                color: tab === t.id ? "#00f7ff" : "#64748b",
-                                border: `1px solid ${tab === t.id ? "rgba(0,247,255,0.3)" : "rgba(255,255,255,0.05)"}`,
+                                background: tab === t.id ? "rgba(57,255,20,0.15)" : "rgba(255,255,255,0.03)",
+                                color: tab === t.id ? "#39FF14" : "#64748b",
+                                border: `1px solid ${tab === t.id ? "rgba(57,255,20,0.3)" : "rgba(255,255,255,0.05)"}`,
                             }}
                         >
                             {t.label}
@@ -73,7 +111,7 @@ export default function Leaderboard() {
                 {/* Tab Content */}
                 {tab === "rankings" && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card overflow-hidden">
-                        <LeaderboardTable data={mockLeaderboard} />
+                        <LeaderboardTable data={leaderboardData} />
                     </motion.div>
                 )}
 

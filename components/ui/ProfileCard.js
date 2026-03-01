@@ -23,7 +23,7 @@ export default function ProfileCard({ profile }) {
                 {[
                     { label: "Rank", value: `#${profile.rank}`, color: "#ffaa00" },
                     { label: "Points", value: profile.points.toLocaleString(), color: "#00ff9d" },
-                    { label: "Events", value: profile.eventsAttended, color: "#00f7ff" },
+                    { label: "Events", value: profile.eventsAttended, color: "#39FF14" },
                 ].map((stat) => (
                     <div key={stat.label} className="text-center py-3 rounded-xl" style={{ background: "rgba(255,255,255,0.03)" }}>
                         <div className="text-xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
@@ -40,7 +40,7 @@ export default function ProfileCard({ profile }) {
                 <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#64748b" }}>Skills</h4>
                 <div className="flex flex-wrap gap-2">
                     {profile.skills.map((skill) => (
-                        <span key={skill} className="text-xs px-3 py-1 rounded-lg" style={{ background: "rgba(122,0,255,0.08)", color: "#a78bfa", border: "1px solid rgba(122,0,255,0.15)" }}>
+                        <span key={skill} className="text-xs px-3 py-1 rounded-lg" style={{ background: "rgba(0,230,118,0.08)", color: "#69f0ae", border: "1px solid rgba(0,230,118,0.15)" }}>
                             {skill}
                         </span>
                     ))}

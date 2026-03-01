@@ -1,22 +1,78 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import ProfileCard from "@/components/ui/ProfileCard";
 import { mockProfile, mockEvents } from "@/lib/mockData";
+import { auth } from "@/lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { getUserProfile, createOrUpdateUserProfile } from "@/lib/firestore";
 
 export default function Profile() {
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
     const attendedEvents = mockEvents.filter((e) => e.status === "Past");
+
+    useEffect(() => {
+        const unsub = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Try to load from Firestore
+                let firestoreProfile = await getUserProfile(user.uid);
+
+                if (!firestoreProfile) {
+                    // First login — create a profile in Firestore from Auth data
+                    const newProfile = {
+                        username: user.displayName || user.email?.split("@")[0] || "Operator",
+                        email: user.email || "",
+                        avatar: "🧑‍💻",
+                        joinDate: new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+                        points: 0,
+                        rank: 999,
+                        eventsAttended: 0,
+                        streak: 0,
+                        badges: [],
+                        skills: [],
+                        bio: "SENTINEX operative ready for deployment.",
+                        team: null,
+                        github: "",
+                        linkedin: "",
+                    };
+                    await createOrUpdateUserProfile(user.uid, newProfile);
+                    firestoreProfile = { id: user.uid, ...newProfile };
+                }
+
+                setProfile(firestoreProfile);
+            } else {
+                // Not logged in — use mock data
+                setProfile(mockProfile);
+            }
+            setLoading(false);
+        });
+
+        return () => unsub();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="min-h-[60vh] flex items-center justify-center">
+                <div className="text-center">
+                    <div className="text-4xl mb-4 animate-pulse">⚡</div>
+                    <p className="text-sm" style={{ color: "#39FF14" }}>Loading profile...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
             <Head>
-                <title>Profile — AI × CYBER HQ</title>
+                <title>Profile — SENTINEX</title>
                 <meta name="description" content="Your member profile, stats, and achievements." />
             </Head>
 
             <div className="max-w-5xl mx-auto px-6 py-12">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
                     <h1 className="text-4xl font-bold text-white mb-2">
-                        👤 <span style={{ color: "#00f7ff" }}>Profile</span>
+                        👤 <span style={{ color: "#39FF14" }}>Profile</span>
                     </h1>
                     <p className="text-sm" style={{ color: "#64748b" }}>Your personal dashboard and achievements</p>
                 </motion.div>
@@ -24,7 +80,7 @@ export default function Profile() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Profile Card */}
                     <div className="lg:col-span-1">
-                        <ProfileCard profile={mockProfile} />
+                        <ProfileCard profile={profile} />
                     </div>
 
                     {/* Right column */}
@@ -34,10 +90,10 @@ export default function Profile() {
                             <h3 className="text-lg font-bold text-white mb-4">📊 Activity Overview</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                 {[
-                                    { label: "Total Points", value: mockProfile.points, color: "#00ff9d" },
-                                    { label: "Events", value: mockProfile.eventsAttended, color: "#00f7ff" },
-                                    { label: "Badges", value: mockProfile.badges.length, color: "#ffaa00" },
-                                    { label: "Rank", value: `#${mockProfile.rank}`, color: "#7a00ff" },
+                                    { label: "Total Points", value: profile.points || 0, color: "#00ff9d" },
+                                    { label: "Events", value: profile.eventsAttended || 0, color: "#39FF14" },
+                                    { label: "Badges", value: (profile.badges || []).length, color: "#ffaa00" },
+                                    { label: "Rank", value: `#${profile.rank || "—"}`, color: "#00e676" },
                                 ].map((stat) => (
                                     <div key={stat.label} className="p-4 rounded-xl text-center" style={{ background: "rgba(255,255,255,0.03)" }}>
                                         <div className="text-2xl font-black" style={{ color: stat.color }}>{stat.value}</div>
@@ -52,11 +108,11 @@ export default function Profile() {
                             <h3 className="text-lg font-bold text-white mb-4">🕐 Recent Activity</h3>
                             <div className="space-y-3">
                                 {[
-                                    { text: "Registered for CyberStrike Hackathon 2026", time: "2h ago", icon: "📡", color: "#00f7ff" },
+                                    { text: "Registered for CyberStrike Hackathon 2026", time: "2h ago", icon: "📡", color: "#39FF14" },
                                     { text: "Earned CTF Champion badge", time: "1d ago", icon: "🏆", color: "#ffaa00" },
-                                    { text: "Posted in Community Feed", time: "2d ago", icon: "💬", color: "#7a00ff" },
+                                    { text: "Posted in Community Feed", time: "2d ago", icon: "💬", color: "#00e676" },
                                     { text: "Joined Team Exploit", time: "5d ago", icon: "👥", color: "#00ff9d" },
-                                    { text: "Completed Workshop: Intro to Pentesting", time: "1w ago", icon: "🔓", color: "#00f7ff" },
+                                    { text: "Completed Workshop: Intro to Pentesting", time: "1w ago", icon: "🔓", color: "#39FF14" },
                                 ].map((act, i) => (
                                     <div key={i} className="flex items-center gap-3 py-2 px-3 rounded-lg transition-colors" style={{ background: "rgba(255,255,255,0.01)" }}>
                                         <span className="text-lg">{act.icon}</span>

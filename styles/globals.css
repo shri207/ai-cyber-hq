@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-dark: #0b0f1a;
-  --color-bg-card: rgba(15, 23, 42, 0.6);
-  --color-neon-cyan: #00f7ff;
-  --color-neon-purple: #7a00ff;
-  --color-neon-green: #00ff9d;
+  --color-bg-dark: #0a0a0a;
+  --color-bg-card: rgba(10, 18, 10, 0.6);
+  --color-neon-green: #39FF14;
+  --color-neon-matrix: #00e676;
+  --color-neon-lime: #76ff03;
   --color-text-primary: #ffffff;
   --color-text-secondary: #94a3b8;
-  --color-border-glow: rgba(0, 247, 255, 0.2);
+  --color-border-glow: rgba(57, 255, 20, 0.2);
   --font-mono: "Fira Code", "JetBrains Mono", monospace;
   --font-sans: "Inter", "Segoe UI", sans-serif;
 }
@@ -17,6 +17,7 @@
 html {
   scroll-behavior: smooth;
 }
+
 body {
   background: var(--color-bg-dark);
   color: var(--color-text-primary);
@@ -25,41 +26,55 @@ body {
 }
 
 /* ─── scrollbar ─── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0b0f1a; }
-::-webkit-scrollbar-thumb { background: #00f7ff44; border-radius: 3px; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #39FF1444;
+  border-radius: 3px;
+}
 
 /* ─── neon utilities ─── */
 .neon-text {
-  text-shadow: 0 0 7px #00f7ff, 0 0 20px #00f7ff55;
+  text-shadow: 0 0 7px #39FF14, 0 0 20px #39FF1455;
 }
-.neon-text-purple {
-  text-shadow: 0 0 7px #7a00ff, 0 0 20px #7a00ff55;
+
+.neon-text-matrix {
+  text-shadow: 0 0 7px #00e676, 0 0 20px #00e67655;
 }
+
 .neon-text-green {
-  text-shadow: 0 0 7px #00ff9d, 0 0 20px #00ff9d55;
+  text-shadow: 0 0 7px #76ff03, 0 0 20px #76ff0355;
 }
+
 .neon-border {
-  border: 1px solid rgba(0, 247, 255, 0.25);
-  box-shadow: 0 0 15px rgba(0, 247, 255, 0.08), inset 0 0 15px rgba(0, 247, 255, 0.03);
+  border: 1px solid rgba(57, 255, 20, 0.25);
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.08), inset 0 0 15px rgba(57, 255, 20, 0.03);
 }
-.neon-border-purple {
-  border: 1px solid rgba(122, 0, 255, 0.25);
-  box-shadow: 0 0 15px rgba(122, 0, 255, 0.08);
+
+.neon-border-matrix {
+  border: 1px solid rgba(0, 230, 118, 0.25);
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.08);
 }
 
 /* ─── glassmorphism card ─── */
 .glass-card {
-  background: rgba(15, 23, 42, 0.65);
+  background: rgba(10, 18, 10, 0.65);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 247, 255, 0.12);
+  border: 1px solid rgba(57, 255, 20, 0.12);
   border-radius: 16px;
   transition: all 0.3s ease;
 }
+
 .glass-card:hover {
-  border-color: rgba(0, 247, 255, 0.35);
-  box-shadow: 0 0 30px rgba(0, 247, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4);
+  border-color: rgba(57, 255, 20, 0.35);
+  box-shadow: 0 0 30px rgba(57, 255, 20, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4);
   transform: translateY(-2px);
 }
 
@@ -69,14 +84,20 @@ body {
   inset: 0;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(0, 247, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 247, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
   animation: gridMove 20s linear infinite;
 }
+
 @keyframes gridMove {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(60px, 60px); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(60px, 60px);
+  }
 }
 
 /* ─── glow button ─── */
@@ -93,32 +114,38 @@ body {
   position: relative;
   overflow: hidden;
 }
+
 .btn-neon-cyan {
-  background: linear-gradient(135deg, rgba(0, 247, 255, 0.15), rgba(0, 247, 255, 0.05));
-  border: 1px solid rgba(0, 247, 255, 0.4);
-  color: #00f7ff;
+  background: linear-gradient(135deg, rgba(57, 255, 20, 0.15), rgba(57, 255, 20, 0.05));
+  border: 1px solid rgba(57, 255, 20, 0.4);
+  color: #39FF14;
 }
+
 .btn-neon-cyan:hover {
-  background: linear-gradient(135deg, rgba(0, 247, 255, 0.25), rgba(0, 247, 255, 0.1));
-  box-shadow: 0 0 30px rgba(0, 247, 255, 0.2);
+  background: linear-gradient(135deg, rgba(57, 255, 20, 0.25), rgba(57, 255, 20, 0.1));
+  box-shadow: 0 0 30px rgba(57, 255, 20, 0.2);
 }
+
 .btn-neon-purple {
-  background: linear-gradient(135deg, rgba(122, 0, 255, 0.15), rgba(122, 0, 255, 0.05));
-  border: 1px solid rgba(122, 0, 255, 0.4);
-  color: #7a00ff;
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.15), rgba(0, 230, 118, 0.05));
+  border: 1px solid rgba(0, 230, 118, 0.4);
+  color: #00e676;
 }
+
 .btn-neon-purple:hover {
-  background: linear-gradient(135deg, rgba(122, 0, 255, 0.25), rgba(122, 0, 255, 0.1));
-  box-shadow: 0 0 30px rgba(122, 0, 255, 0.2);
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.25), rgba(0, 230, 118, 0.1));
+  box-shadow: 0 0 30px rgba(0, 230, 118, 0.2);
 }
+
 .btn-solid-cyan {
-  background: linear-gradient(135deg, #00f7ff, #00c8d4);
-  color: #0b0f1a;
+  background: linear-gradient(135deg, #39FF14, #2bd611);
+  color: #0a0a0a;
   border: none;
   font-weight: 700;
 }
+
 .btn-solid-cyan:hover {
-  box-shadow: 0 0 40px rgba(0, 247, 255, 0.35);
+  box-shadow: 0 0 40px rgba(57, 255, 20, 0.35);
   transform: scale(1.02);
 }
 
@@ -131,19 +158,21 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   border-radius: 999px;
-  background: rgba(0, 247, 255, 0.08);
-  border: 1px solid rgba(0, 247, 255, 0.2);
-  color: #00f7ff;
+  background: rgba(57, 255, 20, 0.08);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  color: #39FF14;
 }
+
 .badge-chip-purple {
-  background: rgba(122, 0, 255, 0.08);
-  border-color: rgba(122, 0, 255, 0.2);
-  color: #a855f7;
+  background: rgba(0, 230, 118, 0.08);
+  border-color: rgba(0, 230, 118, 0.2);
+  color: #00e676;
 }
+
 .badge-chip-green {
-  background: rgba(0, 255, 157, 0.08);
-  border-color: rgba(0, 255, 157, 0.2);
-  color: #00ff9d;
+  background: rgba(118, 255, 3, 0.08);
+  border-color: rgba(118, 255, 3, 0.2);
+  color: #76ff03;
 }
 
 /* ─── ticker ─── */
@@ -151,15 +180,22 @@ body {
   overflow: hidden;
   width: 100%;
 }
+
 .ticker {
   display: flex;
   gap: 3rem;
   animation: tickerScroll 30s linear infinite;
   width: max-content;
 }
+
 @keyframes tickerScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* ─── matrix rain canvas overlay ─── */

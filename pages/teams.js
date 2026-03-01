@@ -32,7 +32,7 @@ export default function Teams() {
     return (
         <>
             <Head>
-                <title>Teams — AI × CYBER HQ</title>
+                <title>Teams — SENTINEX</title>
                 <meta name="description" content="Form teams, request to join existing squads, and compete together." />
             </Head>
 
@@ -42,7 +42,7 @@ export default function Teams() {
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div>
                             <h1 className="text-4xl font-bold text-white mb-2">
-                                👥 <span style={{ color: "#00f7ff" }}>Teams</span>
+                                👥 <span style={{ color: "#39FF14" }}>Teams</span>
                             </h1>
                             <p className="text-sm" style={{ color: "#64748b" }}>Create or join teams of up to 4 members</p>
                         </div>
@@ -123,7 +123,7 @@ export default function Teams() {
                             className="px-4 py-2 rounded-lg text-xs font-semibold transition-all"
                             style={{
                                 background: filter === f ? "rgba(0,247,255,0.15)" : "rgba(255,255,255,0.03)",
-                                color: filter === f ? "#00f7ff" : "#64748b",
+                                color: filter === f ? "#39FF14" : "#64748b",
                                 border: `1px solid ${filter === f ? "rgba(0,247,255,0.3)" : "rgba(255,255,255,0.05)"}`,
                             }}
                         >

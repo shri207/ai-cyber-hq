@@ -51,8 +51,8 @@ export default function ChatbotAI() {
                 onClick={() => setOpen(!open)}
                 className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center text-2xl"
                 style={{
-                    background: "linear-gradient(135deg, #00f7ff, #7a00ff)",
-                    boxShadow: "0 0 30px rgba(0,247,255,0.3)",
+                    background: "linear-gradient(135deg, #39FF14, #00e676)",
+                    boxShadow: "0 0 30px rgba(57,255,20,0.3)",
                 }}
             >
                 {open ? "✕" : "🤖"}
@@ -67,18 +67,18 @@ export default function ChatbotAI() {
                         exit={{ opacity: 0, y: 30, scale: 0.9 }}
                         className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden"
                         style={{
-                            background: "rgba(11,15,26,0.95)",
-                            border: "1px solid rgba(0,247,255,0.15)",
+                            background: "rgba(10,10,10,0.95)",
+                            border: "1px solid rgba(57,255,20,0.15)",
                             backdropFilter: "blur(20px)",
-                            boxShadow: "0 0 60px rgba(0,247,255,0.1)",
+                            boxShadow: "0 0 60px rgba(57,255,20,0.1)",
                         }}
                     >
                         {/* Header */}
-                        <div className="p-4 flex items-center gap-3" style={{ borderBottom: "1px solid rgba(0,247,255,0.1)" }}>
-                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-lg" style={{ background: "rgba(0,247,255,0.1)" }}>🛡️</div>
+                        <div className="p-4 flex items-center gap-3" style={{ borderBottom: "1px solid rgba(57,255,20,0.1)" }}>
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-lg" style={{ background: "rgba(57,255,20,0.1)" }}>🛡️</div>
                             <div>
-                                <div className="text-sm font-bold" style={{ color: "#00f7ff" }}>Sentinel AI</div>
-                                <div className="text-[10px]" style={{ color: "#00ff9d" }}>● Online</div>
+                                <div className="text-sm font-bold" style={{ color: "#39FF14" }}>Sentinel AI</div>
+                                <div className="text-[10px]" style={{ color: "#76ff03" }}>● Online</div>
                             </div>
                         </div>
 
@@ -95,10 +95,10 @@ export default function ChatbotAI() {
                                         className="max-w-[80%] px-3 py-2 rounded-xl text-xs leading-relaxed"
                                         style={{
                                             background: msg.role === "user"
-                                                ? "rgba(122,0,255,0.15)"
-                                                : "rgba(0,247,255,0.08)",
-                                            color: msg.role === "user" ? "#e0c7ff" : "#b0f0ff",
-                                            border: `1px solid ${msg.role === "user" ? "rgba(122,0,255,0.2)" : "rgba(0,247,255,0.1)"}`,
+                                                ? "rgba(0,230,118,0.15)"
+                                                : "rgba(57,255,20,0.08)",
+                                            color: msg.role === "user" ? "#b9f6ca" : "#b9f6ca",
+                                            border: `1px solid ${msg.role === "user" ? "rgba(0,230,118,0.2)" : "rgba(57,255,20,0.1)"}`,
                                             whiteSpace: "pre-line",
                                         }}
                                     >
@@ -110,7 +110,7 @@ export default function ChatbotAI() {
                         </div>
 
                         {/* Input */}
-                        <div className="p-3 flex gap-2" style={{ borderTop: "1px solid rgba(0,247,255,0.1)" }}>
+                        <div className="p-3 flex gap-2" style={{ borderTop: "1px solid rgba(57,255,20,0.1)" }}>
                             <input
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
@@ -119,7 +119,7 @@ export default function ChatbotAI() {
                                 className="flex-1 px-3 py-2 rounded-lg text-xs outline-none"
                                 style={{
                                     background: "rgba(255,255,255,0.04)",
-                                    border: "1px solid rgba(0,247,255,0.1)",
+                                    border: "1px solid rgba(57,255,20,0.1)",
                                     color: "#fff",
                                 }}
                             />
@@ -127,9 +127,9 @@ export default function ChatbotAI() {
                                 onClick={send}
                                 className="px-3 py-2 rounded-lg text-xs font-bold"
                                 style={{
-                                    background: "rgba(0,247,255,0.15)",
-                                    color: "#00f7ff",
-                                    border: "1px solid rgba(0,247,255,0.3)",
+                                    background: "rgba(57,255,20,0.15)",
+                                    color: "#39FF14",
+                                    border: "1px solid rgba(57,255,20,0.3)",
                                 }}
                             >
                                 Send

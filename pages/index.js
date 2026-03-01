@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>AI × CYBER HQ — Digital Headquarters</title>
+        <title>SENTINEX — Digital Headquarters</title>
         <meta name="description" content="The Digital Headquarters for an AI & Cybersecurity Student Community. Discover events, form teams, track rankings." />
       </Head>
 
@@ -40,7 +40,7 @@ export default function Home() {
         </div>
 
         {/* Radial gradient overlay */}
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 30%, #0b0f1a 75%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 30%, #0a0a0a 75%)" }} />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 w-full">
           <div className="max-w-2xl">
@@ -55,11 +55,7 @@ export default function Home() {
               variants={fadeUp}
               className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] mb-4"
             >
-              <span style={{ color: "#00f7ff" }} className="neon-text">AI</span>
-              <span className="mx-2" style={{ color: "#7a00ff" }}>×</span>
-              <span className="text-white">CYBER</span>
-              <br />
-              <span className="text-white/80">HQ</span>
+              <span style={{ color: "#39FF14" }} className="neon-text">SENTINEX</span>
             </motion.h1>
 
             <motion.p custom={2} initial="hidden" animate="visible" variants={fadeUp} className="text-lg sm:text-xl mb-2" style={{ color: "#94a3b8" }}>
@@ -86,7 +82,7 @@ export default function Home() {
       </section>
 
       {/* ═══════ STATS BAR ═══════ */}
-      <section className="py-12 px-6" style={{ background: "rgba(0,247,255,0.02)", borderTop: "1px solid rgba(0,247,255,0.06)", borderBottom: "1px solid rgba(0,247,255,0.06)" }}>
+      <section className="py-12 px-6" style={{ background: "rgba(57,255,20,0.02)", borderTop: "1px solid rgba(57,255,20,0.06)", borderBottom: "1px solid rgba(57,255,20,0.06)" }}>
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((s, i) => (
             <motion.div
@@ -98,7 +94,7 @@ export default function Home() {
               className="text-center"
             >
               <div className="text-2xl mb-1">{s.icon}</div>
-              <div className="text-3xl font-black" style={{ color: "#00f7ff" }}>{s.value}</div>
+              <div className="text-3xl font-black" style={{ color: "#39FF14" }}>{s.value}</div>
               <div className="text-xs mt-1 uppercase tracking-wider" style={{ color: "#64748b" }}>{s.label}</div>
             </motion.div>
           ))}
@@ -113,7 +109,7 @@ export default function Home() {
         <div className="ticker-wrap">
           <div className="ticker">
             {[...upcoming, ...upcoming].map((ev, i) => (
-              <div key={`${ev.id}-${i}`} className="flex items-center gap-3 whitespace-nowrap px-5 py-3 rounded-xl" style={{ background: "rgba(0,247,255,0.04)", border: "1px solid rgba(0,247,255,0.08)" }}>
+              <div key={`${ev.id}-${i}`} className="flex items-center gap-3 whitespace-nowrap px-5 py-3 rounded-xl" style={{ background: "rgba(57,255,20,0.04)", border: "1px solid rgba(57,255,20,0.08)" }}>
                 <span className="text-lg">{ev.image}</span>
                 <div>
                   <div className="text-sm font-semibold text-white">{ev.title}</div>
@@ -135,17 +131,17 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-3xl font-bold text-white text-center mb-3"
           >
-            What We <span style={{ color: "#00f7ff" }}>Offer</span>
+            What We <span style={{ color: "#39FF14" }}>Offer</span>
           </motion.h2>
           <p className="text-center text-sm mb-12" style={{ color: "#64748b" }}>Everything you need to grow as a cyber defender</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: "📡", title: "Events & Hackathons", desc: "CTFs, workshops, conferences and hackathons to sharpen your skills.", color: "#00f7ff" },
-              { icon: "👥", title: "Team Formation", desc: "Find your squad. Create or join teams of up to 4 members for competitions.", color: "#7a00ff" },
+              { icon: "📡", title: "Events & Hackathons", desc: "CTFs, workshops, conferences and hackathons to sharpen your skills.", color: "#39FF14" },
+              { icon: "👥", title: "Team Formation", desc: "Find your squad. Create or join teams of up to 4 members for competitions.", color: "#00e676" },
               { icon: "🏆", title: "Leaderboard & Badges", desc: "Earn points, climb rankings, and unlock achievement badges.", color: "#ffaa00" },
-              { icon: "💬", title: "Community Feed", desc: "Share ideas, post writeups, and discuss the latest in AI & cyber.", color: "#00ff9d" },
-              { icon: "🤖", title: "Sentinel AI", desc: "Your cyber assistant — ask about events, get resource recommendations.", color: "#00f7ff" },
+              { icon: "💬", title: "Community Feed", desc: "Share ideas, post writeups, and discuss the latest in AI & cyber.", color: "#76ff03" },
+              { icon: "🤖", title: "Sentinel AI", desc: "Your cyber assistant — ask about events, get resource recommendations.", color: "#39FF14" },
               { icon: "🔬", title: "Threat Analyzer", desc: "Paste suspicious code and get instant mock AI threat analysis.", color: "#ef4444" },
             ].map((feat, i) => (
               <motion.div
@@ -181,7 +177,7 @@ export default function Home() {
           className="max-w-xl mx-auto"
         >
           <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to <span style={{ color: "#00f7ff" }} className="neon-text">Join the Grid</span>?
+            Ready to <span style={{ color: "#39FF14" }} className="neon-text">Join the Grid</span>?
           </h2>
           <p className="text-sm mb-8" style={{ color: "#64748b" }}>
             Become part of the fastest-growing AI & Cybersecurity student community.

@@ -51,7 +51,7 @@ export default function Signup() {
     return (
         <>
             <Head>
-                <title>Sign Up — AI × CYBER HQ</title>
+                <title>Sign Up — SENTINEX</title>
             </Head>
 
             <div className="min-h-[85vh] flex items-center justify-center px-6">
@@ -158,7 +158,7 @@ export default function Signup() {
                     <div className="mt-6 text-center">
                         <p className="text-xs" style={{ color: "#64748b" }}>
                             Already have an account?{" "}
-                            <Link href="/login" style={{ color: "#00f7ff" }} className="hover:underline font-medium">
+                            <Link href="/login" style={{ color: "#39FF14" }} className="hover:underline font-medium">
                                 Login
                             </Link>
                         </p>

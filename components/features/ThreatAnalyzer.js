@@ -69,7 +69,7 @@ export default function ThreatAnalyzer() {
                 className="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none mb-4"
                 style={{
                     background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(0,247,255,0.1)",
+                    border: "1px solid rgba(57,255,20,0.1)",
                     color: "#e2e8f0",
                     fontFamily: "var(--font-mono)",
                 }}
@@ -82,16 +82,16 @@ export default function ThreatAnalyzer() {
             {/* Scanning animation */}
             {scanning && (
                 <div className="mt-4">
-                    <div className="h-1 rounded-full overflow-hidden" style={{ background: "rgba(0,247,255,0.1)" }}>
+                    <div className="h-1 rounded-full overflow-hidden" style={{ background: "rgba(57,255,20,0.1)" }}>
                         <motion.div
                             initial={{ width: "0%" }}
                             animate={{ width: "100%" }}
                             transition={{ duration: 1.5, ease: "easeInOut" }}
                             className="h-full rounded-full"
-                            style={{ background: "linear-gradient(90deg, #00f7ff, #7a00ff)" }}
+                            style={{ background: "linear-gradient(90deg, #39FF14, #00e676)" }}
                         />
                     </div>
-                    <p className="text-xs mt-2 text-center" style={{ color: "#00f7ff" }}>Analyzing threat vectors...</p>
+                    <p className="text-xs mt-2 text-center" style={{ color: "#39FF14" }}>Analyzing threat vectors...</p>
                 </div>
             )}
 

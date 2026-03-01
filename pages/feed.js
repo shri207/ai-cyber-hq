@@ -36,7 +36,7 @@ export default function Feed() {
     return (
         <>
             <Head>
-                <title>Community Feed — AI × CYBER HQ</title>
+                <title>Community Feed — SENTINEX</title>
                 <meta name="description" content="Post ideas, share writeups, discuss AI and cybersecurity topics." />
             </Head>
 
@@ -44,7 +44,7 @@ export default function Feed() {
                 {/* Header */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
                     <h1 className="text-4xl font-bold text-white mb-2">
-                        💬 <span style={{ color: "#00f7ff" }}>Community Feed</span>
+                        💬 <span style={{ color: "#39FF14" }}>Community Feed</span>
                     </h1>
                     <p className="text-sm" style={{ color: "#64748b" }}>Share ideas, post writeups, and discuss with the community</p>
                 </motion.div>

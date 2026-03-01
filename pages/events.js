@@ -21,7 +21,7 @@ export default function Events() {
     return (
         <>
             <Head>
-                <title>Events — AI × CYBER HQ</title>
+                <title>Events — SENTINEX</title>
                 <meta name="description" content="Discover hackathons, workshops, CTF challenges and conferences." />
             </Head>
 
@@ -29,7 +29,7 @@ export default function Events() {
                 {/* Header */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
                     <h1 className="text-4xl font-bold text-white mb-2">
-                        📡 <span style={{ color: "#00f7ff" }}>Events</span>
+                        📡 <span style={{ color: "#39FF14" }}>Events</span>
                     </h1>
                     <p className="text-sm" style={{ color: "#64748b" }}>Hackathons, workshops, CTFs and conferences to level up your skills</p>
                 </motion.div>
@@ -44,7 +44,7 @@ export default function Events() {
                                 className="px-4 py-2 rounded-lg text-xs font-semibold transition-all"
                                 style={{
                                     background: statusFilter === f ? "rgba(0,247,255,0.15)" : "rgba(255,255,255,0.03)",
-                                    color: statusFilter === f ? "#00f7ff" : "#64748b",
+                                    color: statusFilter === f ? "#39FF14" : "#64748b",
                                     border: `1px solid ${statusFilter === f ? "rgba(0,247,255,0.3)" : "rgba(255,255,255,0.05)"}`,
                                 }}
                             >

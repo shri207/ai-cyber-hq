@@ -43,7 +43,7 @@ export default function LeaderboardTable({ data }) {
                             <td className="py-4 px-4">
                                 <div className="flex items-center gap-3">
                                     <span className="text-xl">{user.avatar}</span>
-                                    <span className="font-semibold text-white group-hover:text-[#00f7ff] transition-colors">
+                                    <span className="font-semibold text-white group-hover:text-[#39FF14] transition-colors">
                                         {user.username}
                                     </span>
                                 </div>

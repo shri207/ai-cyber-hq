@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function EventCard({ event, onSelect }) {
     const statusColors = {
         Live: { bg: "rgba(239,68,68,0.12)", text: "#ef4444", dot: "#ef4444" },
-        Upcoming: { bg: "rgba(0,247,255,0.1)", text: "#00f7ff", dot: "#00f7ff" },
+        Upcoming: { bg: "rgba(57,255,20,0.1)", text: "#39FF14", dot: "#39FF14" },
         Past: { bg: "rgba(100,116,139,0.1)", text: "#64748b", dot: "#64748b" },
     };
     const s = statusColors[event.status] || statusColors.Past;
@@ -32,7 +32,7 @@ export default function EventCard({ event, onSelect }) {
 
             {/* Title & Type */}
             <h3 className="text-lg font-bold text-white mb-1">{event.title}</h3>
-            <p className="text-xs font-medium mb-3" style={{ color: "#7a00ff" }}>{event.type}</p>
+            <p className="text-xs font-medium mb-3" style={{ color: "#00e676" }}>{event.type}</p>
 
             {/* Description */}
             <p className="text-sm leading-relaxed mb-4" style={{ color: "#94a3b8" }}>

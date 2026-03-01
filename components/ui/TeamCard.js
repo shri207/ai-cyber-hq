@@ -14,7 +14,7 @@ export default function TeamCard({ team, onJoin }) {
             <div className="flex items-start justify-between mb-3">
                 <div>
                     <h3 className="text-lg font-bold text-white">{team.name}</h3>
-                    <p className="text-xs mt-0.5" style={{ color: "#64748b" }}>Led by <span style={{ color: "#00f7ff" }}>{team.leader}</span></p>
+                    <p className="text-xs mt-0.5" style={{ color: "#64748b" }}>Led by <span style={{ color: "#39FF14" }}>{team.leader}</span></p>
                 </div>
                 <span
                     className="text-xs font-semibold px-3 py-1 rounded-full"
@@ -36,13 +36,13 @@ export default function TeamCard({ team, onJoin }) {
             <div className="mb-4">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs font-medium" style={{ color: "#64748b" }}>Members</span>
-                    <span className="text-xs" style={{ color: "#00f7ff" }}>
+                    <span className="text-xs" style={{ color: "#39FF14" }}>
                         {team.members.length}/{team.maxMembers}
                     </span>
                 </div>
                 <div className="flex gap-2 flex-wrap">
                     {team.members.map((m) => (
-                        <span key={m} className="text-xs px-2 py-1 rounded-lg" style={{ background: "rgba(0,247,255,0.06)", color: "#94a3b8" }}>
+                        <span key={m} className="text-xs px-2 py-1 rounded-lg" style={{ background: "rgba(57,255,20,0.06)", color: "#94a3b8" }}>
                             {m}
                         </span>
                     ))}
