@@ -1,26 +1,172 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-bg-dark: #0b0f1a;
+  --color-bg-card: rgba(15, 23, 42, 0.6);
+  --color-neon-cyan: #00f7ff;
+  --color-neon-purple: #7a00ff;
+  --color-neon-green: #00ff9d;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #94a3b8;
+  --color-border-glow: rgba(0, 247, 255, 0.2);
+  --font-mono: "Fira Code", "JetBrains Mono", monospace;
+  --font-sans: "Inter", "Segoe UI", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── base resets ─── */
+html {
+  scroll-behavior: smooth;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* ─── scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0b0f1a; }
+::-webkit-scrollbar-thumb { background: #00f7ff44; border-radius: 3px; }
+
+/* ─── neon utilities ─── */
+.neon-text {
+  text-shadow: 0 0 7px #00f7ff, 0 0 20px #00f7ff55;
+}
+.neon-text-purple {
+  text-shadow: 0 0 7px #7a00ff, 0 0 20px #7a00ff55;
+}
+.neon-text-green {
+  text-shadow: 0 0 7px #00ff9d, 0 0 20px #00ff9d55;
+}
+.neon-border {
+  border: 1px solid rgba(0, 247, 255, 0.25);
+  box-shadow: 0 0 15px rgba(0, 247, 255, 0.08), inset 0 0 15px rgba(0, 247, 255, 0.03);
+}
+.neon-border-purple {
+  border: 1px solid rgba(122, 0, 255, 0.25);
+  box-shadow: 0 0 15px rgba(122, 0, 255, 0.08);
+}
+
+/* ─── glassmorphism card ─── */
+.glass-card {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 247, 255, 0.12);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+.glass-card:hover {
+  border-color: rgba(0, 247, 255, 0.35);
+  box-shadow: 0 0 30px rgba(0, 247, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ─── animated grid background ─── */
+.cyber-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(0, 247, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 247, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(60px, 60px); }
+}
+
+/* ─── glow button ─── */
+.btn-neon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.btn-neon-cyan {
+  background: linear-gradient(135deg, rgba(0, 247, 255, 0.15), rgba(0, 247, 255, 0.05));
+  border: 1px solid rgba(0, 247, 255, 0.4);
+  color: #00f7ff;
+}
+.btn-neon-cyan:hover {
+  background: linear-gradient(135deg, rgba(0, 247, 255, 0.25), rgba(0, 247, 255, 0.1));
+  box-shadow: 0 0 30px rgba(0, 247, 255, 0.2);
+}
+.btn-neon-purple {
+  background: linear-gradient(135deg, rgba(122, 0, 255, 0.15), rgba(122, 0, 255, 0.05));
+  border: 1px solid rgba(122, 0, 255, 0.4);
+  color: #7a00ff;
+}
+.btn-neon-purple:hover {
+  background: linear-gradient(135deg, rgba(122, 0, 255, 0.25), rgba(122, 0, 255, 0.1));
+  box-shadow: 0 0 30px rgba(122, 0, 255, 0.2);
+}
+.btn-solid-cyan {
+  background: linear-gradient(135deg, #00f7ff, #00c8d4);
+  color: #0b0f1a;
+  border: none;
+  font-weight: 700;
+}
+.btn-solid-cyan:hover {
+  box-shadow: 0 0 40px rgba(0, 247, 255, 0.35);
+  transform: scale(1.02);
+}
+
+/* ─── badge chips ─── */
+.badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background: rgba(0, 247, 255, 0.08);
+  border: 1px solid rgba(0, 247, 255, 0.2);
+  color: #00f7ff;
+}
+.badge-chip-purple {
+  background: rgba(122, 0, 255, 0.08);
+  border-color: rgba(122, 0, 255, 0.2);
+  color: #a855f7;
+}
+.badge-chip-green {
+  background: rgba(0, 255, 157, 0.08);
+  border-color: rgba(0, 255, 157, 0.2);
+  color: #00ff9d;
+}
+
+/* ─── ticker ─── */
+.ticker-wrap {
+  overflow: hidden;
+  width: 100%;
+}
+.ticker {
+  display: flex;
+  gap: 3rem;
+  animation: tickerScroll 30s linear infinite;
+  width: max-content;
+}
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── matrix rain canvas overlay ─── */
+.matrix-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.06;
 }
