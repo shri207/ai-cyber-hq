@@ -2,8 +2,12 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export default function Signup() {
+    const router = useRouter();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -20,15 +24,25 @@ export default function Signup() {
         setLoading(true);
         setError("");
         try {
-            // In production, use Firebase Auth:
-            // import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-            // import { auth } from "@/lib/firebase";
-            // const cred = await createUserWithEmailAndPassword(auth, email, password);
-            // await updateProfile(cred.user, { displayName: username });
-            await new Promise((r) => setTimeout(r, 1000));
-            alert("✅ Signup simulation successful! In production, this creates a Firebase account.");
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+            await updateProfile(cred.user, { displayName: username });
+            router.push("/profile");
         } catch (err) {
             setError(err.message || "Signup failed");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleGoogleSignup = async () => {
+        setLoading(true);
+        setError("");
+        try {
+            const provider = new GoogleAuthProvider();
+            await signInWithPopup(auth, provider);
+            router.push("/profile");
+        } catch (err) {
+            setError(err.message || "Google Signup failed");
         } finally {
             setLoading(false);
         }
@@ -125,6 +139,21 @@ export default function Signup() {
                             {loading ? "⏳ Creating Account..." : "🚀 Create Account"}
                         </button>
                     </form>
+
+                    <div className="mt-4 flex items-center justify-between">
+                        <span className="w-1/5 border-b border-gray-700"></span>
+                        <span className="text-xs text-gray-500 uppercase">Or</span>
+                        <span className="w-1/5 border-b border-gray-700"></span>
+                    </div>
+
+                    <button
+                        onClick={handleGoogleSignup}
+                        disabled={loading}
+                        className="btn-neon w-full justify-center text-sm mt-4"
+                        style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff" }}
+                    >
+                        🌐 Sign Up with Google
+                    </button>
 
                     <div className="mt-6 text-center">
                         <p className="text-xs" style={{ color: "#64748b" }}>

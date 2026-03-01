@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const navLinks = [
     { href: "/", label: "Home", icon: "⌂" },
@@ -15,6 +17,23 @@ const navLinks = [
 export default function Navbar() {
     const router = useRouter();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            router.push("/login");
+        } catch (error) {
+            console.error("Logout error", error);
+        }
+    };
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-50">
@@ -38,7 +57,7 @@ export default function Navbar() {
 
                     {/* Desktop nav */}
                     <div className="hidden md:flex items-center gap-1">
-                        {navLinks.map((link) => {
+                        {navLinks.filter(link => link.href !== '/profile' || user).map((link) => {
                             const active = router.pathname === link.href;
                             return (
                                 <Link
@@ -66,9 +85,15 @@ export default function Navbar() {
 
                     {/* Auth button (desktop) */}
                     <div className="hidden md:flex items-center gap-3">
-                        <Link href="/login" className="btn-neon btn-neon-cyan text-xs !py-2 !px-4">
-                            Login
-                        </Link>
+                        {user ? (
+                            <button onClick={handleLogout} className="btn-neon text-xs !py-2 !px-4" style={{ border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5' }}>
+                                Logout
+                            </button>
+                        ) : (
+                            <Link href="/login" className="btn-neon btn-neon-cyan text-xs !py-2 !px-4">
+                                Login
+                            </Link>
+                        )}
                     </div>
 
                     {/* Mobile hamburger */}
@@ -102,7 +127,7 @@ export default function Navbar() {
                             borderBottom: "1px solid rgba(0,247,255,0.08)",
                         }}
                     >
-                        {navLinks.map((link) => {
+                        {navLinks.filter(link => link.href !== '/profile' || user).map((link) => {
                             const active = router.pathname === link.href;
                             return (
                                 <Link
@@ -120,13 +145,26 @@ export default function Navbar() {
                                 </Link>
                             );
                         })}
-                        <Link
-                            href="/login"
-                            onClick={() => setMobileOpen(false)}
-                            className="block mt-2 text-center btn-neon btn-neon-cyan text-sm"
-                        >
-                            Login
-                        </Link>
+                        {user ? (
+                            <button
+                                onClick={() => {
+                                    handleLogout();
+                                    setMobileOpen(false);
+                                }}
+                                className="block mt-2 w-full text-center py-2 rounded-xl text-sm transition-colors"
+                                style={{ border: '1px solid rgba(239, 68, 68, 0.2)', color: '#fca5a5', background: 'rgba(239, 68, 68, 0.05)' }}
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <Link
+                                href="/login"
+                                onClick={() => setMobileOpen(false)}
+                                className="block mt-2 text-center btn-neon btn-neon-cyan text-sm"
+                            >
+                                Login
+                            </Link>
+                        )}
                     </motion.div>
                 )}
             </AnimatePresence>
