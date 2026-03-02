@@ -206,3 +206,57 @@ body {
   pointer-events: none;
   opacity: 0.06;
 }
+
+/* ─── Toast notifications ─── */
+.toast-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9999;
+}
+
+/* ─── Light theme overrides ─── */
+[data-theme="light"] body {
+  background: #f0f2f5;
+  color: #1a1a2e;
+}
+
+[data-theme="light"] .cyber-grid {
+  background-image:
+    linear-gradient(rgba(57, 255, 20, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57, 255, 20, 0.04) 1px, transparent 1px);
+}
+
+[data-theme="light"] .glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(57, 255, 20, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .glass-card:hover {
+  border-color: rgba(57, 255, 20, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .neon-text {
+  text-shadow: none;
+}
+
+[data-theme="light"] .neon-border {
+  border-color: rgba(57, 255, 20, 0.3);
+  box-shadow: none;
+}
+
+[data-theme="light"] .badge-chip {
+  background: rgba(57, 255, 20, 0.1);
+  border-color: rgba(57, 255, 20, 0.25);
+  color: #0d8a00;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f0f2f5;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(57, 255, 20, 0.25);
+}

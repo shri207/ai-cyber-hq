@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Head from "next/head";
 import FeedPost from "@/components/ui/FeedPost";
 import { mockFeed } from "@/lib/mockData";
+import { mockPolls } from "@/lib/extendedMockData";
 
 const tagFilters = ["All", "#AI", "#Cyber", "#CTF", "#Malware"];
 
@@ -110,7 +111,94 @@ export default function Feed() {
                         <p style={{ color: "#475569" }}>No posts matching this filter.</p>
                     </div>
                 )}
+
+                {/* ─── Community Polls ─── */}
+                <PollSection />
             </div>
         </>
+    );
+}
+
+function PollSection() {
+    const [polls, setPolls] = useState(mockPolls);
+    const [votedPolls, setVotedPolls] = useState({});
+
+    const handleVote = (pollId, optionIdx) => {
+        if (votedPolls[pollId] !== undefined) return;
+        setVotedPolls((prev) => ({ ...prev, [pollId]: optionIdx }));
+        setPolls((prev) =>
+            prev.map((p) => {
+                if (p.id !== pollId) return p;
+                const newOptions = p.options.map((opt, i) => ({
+                    ...opt,
+                    votes: i === optionIdx ? opt.votes + 1 : opt.votes,
+                }));
+                return { ...p, options: newOptions, totalVotes: p.totalVotes + 1 };
+            })
+        );
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-10"
+        >
+            <h2 className="text-2xl font-bold text-white mb-6">
+                📊 <span style={{ color: "#39FF14" }}>Community Polls</span>
+            </h2>
+            <div className="space-y-4">
+                {polls.map((poll) => (
+                    <div key={poll.id} className="glass-card p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                            <span className="text-xl">{poll.avatar}</span>
+                            <span className="text-sm font-medium text-white">{poll.author}</span>
+                            <span className="text-[10px]" style={{ color: "#475569" }}>• {poll.timestamp}</span>
+                        </div>
+                        <h3 className="text-base font-bold text-white mb-4">{poll.question}</h3>
+                        <div className="space-y-2">
+                            {poll.options.map((opt, i) => {
+                                const pct = poll.totalVotes > 0 ? Math.round((opt.votes / poll.totalVotes) * 100) : 0;
+                                const isVoted = votedPolls[poll.id] === i;
+                                const hasVoted = votedPolls[poll.id] !== undefined;
+                                return (
+                                    <button
+                                        key={i}
+                                        onClick={() => handleVote(poll.id, i)}
+                                        disabled={hasVoted}
+                                        className="w-full text-left p-3 rounded-lg relative overflow-hidden transition-all"
+                                        style={{
+                                            background: "rgba(255,255,255,0.02)",
+                                            border: `1px solid ${isVoted ? "rgba(57,255,20,0.3)" : "rgba(255,255,255,0.05)"}`,
+                                            cursor: hasVoted ? "default" : "pointer",
+                                        }}
+                                    >
+                                        {/* Progress fill */}
+                                        {hasVoted && (
+                                            <motion.div
+                                                className="absolute left-0 top-0 bottom-0 rounded-lg"
+                                                style={{ background: "rgba(57,255,20,0.08)" }}
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${pct}%` }}
+                                                transition={{ duration: 0.6 }}
+                                            />
+                                        )}
+                                        <div className="relative flex items-center justify-between">
+                                            <span className="text-xs font-medium text-white">{opt.label}</span>
+                                            {hasVoted && (
+                                                <span className="text-xs font-bold" style={{ color: "#39FF14" }}>{pct}%</span>
+                                            )}
+                                        </div>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        <div className="text-[10px] mt-3" style={{ color: "#475569" }}>
+                            {poll.totalVotes} votes
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </motion.div>
     );
 }

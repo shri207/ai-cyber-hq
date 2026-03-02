@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Head from "next/head";
 import TeamCard from "@/components/ui/TeamCard";
 import { mockTeams } from "@/lib/mockData";
+import { mockMatchProfiles } from "@/lib/extendedMockData";
 
 export default function Teams() {
     const [showCreate, setShowCreate] = useState(false);
@@ -144,6 +145,67 @@ export default function Teams() {
                         <p className="text-lg" style={{ color: "#475569" }}>No teams found for this filter.</p>
                     </div>
                 )}
+
+                {/* ─── Recommended Teammates (Skill Matchmaking) ─── */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="mt-12"
+                >
+                    <h2 className="text-2xl font-bold text-white mb-2">
+                        🤝 <span style={{ color: "#39FF14" }}>Recommended Teammates</span>
+                    </h2>
+                    <p className="text-sm mb-6" style={{ color: "#64748b" }}>
+                        Matched based on skills, interests, and participation
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {mockMatchProfiles.map((profile, i) => (
+                            <motion.div
+                                key={profile.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 + i * 0.05 }}
+                                className="glass-card p-5"
+                            >
+                                <div className="flex items-center gap-3 mb-3">
+                                    <span className="text-3xl">{profile.avatar}</span>
+                                    <div className="flex-1">
+                                        <div className="text-sm font-bold text-white">{profile.name}</div>
+                                        <div className="text-[10px]" style={{ color: "#64748b" }}>Match Score</div>
+                                    </div>
+                                    <div
+                                        className="text-lg font-black"
+                                        style={{ color: profile.matchScore >= 85 ? "#39FF14" : profile.matchScore >= 70 ? "#ffaa00" : "#94a3b8" }}
+                                    >
+                                        {profile.matchScore}%
+                                    </div>
+                                </div>
+                                {/* Match score bar */}
+                                <div className="w-full h-1.5 rounded-full mb-3" style={{ background: "rgba(57,255,20,0.08)" }}>
+                                    <motion.div
+                                        className="h-full rounded-full"
+                                        style={{ background: profile.matchScore >= 85 ? "#39FF14" : profile.matchScore >= 70 ? "#ffaa00" : "#94a3b8" }}
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${profile.matchScore}%` }}
+                                        transition={{ delay: 0.5 + i * 0.1, duration: 0.6 }}
+                                    />
+                                </div>
+                                <div className="flex flex-wrap gap-1.5 mb-4">
+                                    {profile.skills.map((skill) => (
+                                        <span key={skill} className="badge-chip text-[10px]">{skill}</span>
+                                    ))}
+                                </div>
+                                <button
+                                    onClick={() => handleJoin({ name: profile.name })}
+                                    className="w-full btn-neon btn-neon-cyan text-xs !py-2 text-center"
+                                >
+                                    👥 Invite to Team
+                                </button>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
             </div>
         </>
     );
