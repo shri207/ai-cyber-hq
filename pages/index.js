@@ -15,6 +15,14 @@ const fadeUp = {
   }),
 };
 
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.8, y: 30 },
+  visible: (i) => ({
+    opacity: 1, scale: 1, y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, type: "spring", stiffness: 120 },
+  }),
+};
+
 const stats = [
   { value: "500+", label: "Members", icon: "👥" },
   { value: "120+", label: "Events", icon: "📡" },
@@ -39,15 +47,39 @@ export default function Home() {
           <CyberGlobe />
         </div>
 
+        {/* Animated floating rings */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute w-96 h-96 rounded-full border border-[#39FF14]/10"
+            style={{ top: "10%", right: "-5%" }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute w-72 h-72 rounded-full border border-[#00e676]/10"
+            style={{ bottom: "15%", left: "-3%" }}
+            animate={{ rotate: -360 }}
+            transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute w-48 h-48 rounded-full breathing-ring"
+            style={{ top: "30%", right: "15%", border: "1px solid rgba(57,255,20,0.15)" }}
+          />
+        </div>
+
         {/* Radial gradient overlay */}
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 30%, #0a0a0a 75%)" }} />
+
+        {/* Scan line overlay on hero */}
+        <div className="absolute inset-0 pointer-events-none scan-lines" />
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 w-full">
           <div className="max-w-2xl">
             <motion.div custom={0} initial="hidden" animate="visible" variants={fadeUp} className="mb-4">
-              <span className="badge-chip text-xs">🛡️ Student Community Platform</span>
+              <span className="badge-chip text-xs shimmer">🛡️ Student Community Platform</span>
             </motion.div>
 
+            {/* Glitch text title */}
             <motion.h1
               custom={1}
               initial="hidden"
@@ -55,13 +87,19 @@ export default function Home() {
               variants={fadeUp}
               className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] mb-4"
             >
-              <span style={{ color: "#39FF14" }} className="neon-text">SENTINEX</span>
+              <span
+                style={{ color: "#39FF14" }}
+                className="neon-text glitch-text"
+                data-text="SENTINEX"
+              >
+                SENTINEX
+              </span>
             </motion.h1>
 
             <motion.p custom={2} initial="hidden" animate="visible" variants={fadeUp} className="text-lg sm:text-xl mb-2" style={{ color: "#94a3b8" }}>
               The Digital Headquarters for an
             </motion.p>
-            <motion.p custom={2.5} initial="hidden" animate="visible" variants={fadeUp} className="text-lg sm:text-xl mb-6" style={{ color: "#cbd5e1" }}>
+            <motion.p custom={2.5} initial="hidden" animate="visible" variants={fadeUp} className="text-lg sm:text-xl mb-6 typing-cursor" style={{ color: "#cbd5e1" }}>
               <strong>AI & Cybersecurity Student Community</strong>
             </motion.p>
 
@@ -87,13 +125,19 @@ export default function Home() {
           {stats.map((s, i) => (
             <motion.div
               key={s.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.12, type: "spring", stiffness: 150 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="text-center neon-pulse rounded-2xl py-4"
             >
-              <div className="text-2xl mb-1">{s.icon}</div>
+              <motion.div
+                className="text-2xl mb-1"
+                animate={{ y: [0, -4, 0] }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+              >
+                {s.icon}
+              </motion.div>
               <div className="text-3xl font-black" style={{ color: "#39FF14" }}>{s.value}</div>
               <div className="text-xs mt-1 uppercase tracking-wider" style={{ color: "#64748b" }}>{s.label}</div>
             </motion.div>
@@ -126,8 +170,8 @@ export default function Home() {
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-3xl font-bold text-white text-center mb-3"
           >
@@ -146,13 +190,25 @@ export default function Home() {
             ].map((feat, i) => (
               <motion.div
                 key={feat.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
+                custom={i}
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true }}
-                className="glass-card p-6"
+                variants={scaleIn}
+                whileHover={{
+                  scale: 1.04,
+                  boxShadow: `0 0 30px ${feat.color}25`,
+                  borderColor: `${feat.color}50`,
+                }}
+                className="glass-card p-6 shimmer border-trace"
               >
-                <div className="text-3xl mb-3">{feat.icon}</div>
+                <motion.div
+                  className="text-3xl mb-3"
+                  animate={{ rotate: [0, 5, -5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: i * 0.5 }}
+                >
+                  {feat.icon}
+                </motion.div>
                 <h3 className="text-base font-bold text-white mb-2">{feat.title}</h3>
                 <p className="text-xs leading-relaxed" style={{ color: "#94a3b8" }}>{feat.desc}</p>
               </motion.div>
@@ -169,12 +225,19 @@ export default function Home() {
       </section>
 
       {/* ═══════ CTA ═══════ */}
-      <section className="py-20 px-6 text-center">
+      <section className="py-20 px-6 text-center relative">
+        {/* Background glow */}
+        <motion.div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(57,255,20,0.06) 0%, transparent 70%)" }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 5, repeat: Infinity }}
+        />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-xl mx-auto"
+          className="max-w-xl mx-auto relative z-10"
         >
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to <span style={{ color: "#39FF14" }} className="neon-text">Join the Grid</span>?
@@ -182,11 +245,14 @@ export default function Home() {
           <p className="text-sm mb-8" style={{ color: "#64748b" }}>
             Become part of the fastest-growing AI & Cybersecurity student community.
           </p>
-          <Link href="/signup" className="btn-neon btn-solid-cyan text-lg">
-            🚀 Get Started
-          </Link>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link href="/signup" className="btn-neon btn-solid-cyan text-lg">
+              🚀 Get Started
+            </Link>
+          </motion.div>
         </motion.div>
       </section>
     </>
   );
 }
+

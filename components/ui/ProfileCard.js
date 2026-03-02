@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { badges as badgeData } from "@/lib/mockData";
 
 export default function ProfileCard({ profile }) {
+    const skills = profile.skills || [];
+    const badgeList = profile.badges || [];
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -21,9 +25,9 @@ export default function ProfileCard({ profile }) {
             {/* Stats Grid */}
             <div className="grid grid-cols-3 gap-3 mb-6">
                 {[
-                    { label: "Rank", value: `#${profile.rank}`, color: "#ffaa00" },
-                    { label: "Points", value: profile.points.toLocaleString(), color: "#00ff9d" },
-                    { label: "Events", value: profile.eventsAttended, color: "#39FF14" },
+                    { label: "Rank", value: `#${profile.rank || "—"}`, color: "#ffaa00" },
+                    { label: "Points", value: (profile.points || 0).toLocaleString(), color: "#00ff9d" },
+                    { label: "Events", value: profile.eventsAttended || 0, color: "#39FF14" },
                 ].map((stat) => (
                     <div key={stat.label} className="text-center py-3 rounded-xl" style={{ background: "rgba(255,255,255,0.03)" }}>
                         <div className="text-xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
@@ -36,31 +40,35 @@ export default function ProfileCard({ profile }) {
             <p className="text-sm leading-relaxed mb-5" style={{ color: "#94a3b8" }}>{profile.bio}</p>
 
             {/* Skills */}
-            <div className="mb-5">
-                <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#64748b" }}>Skills</h4>
-                <div className="flex flex-wrap gap-2">
-                    {profile.skills.map((skill) => (
-                        <span key={skill} className="text-xs px-3 py-1 rounded-lg" style={{ background: "rgba(0,230,118,0.08)", color: "#69f0ae", border: "1px solid rgba(0,230,118,0.15)" }}>
-                            {skill}
-                        </span>
-                    ))}
+            {skills.length > 0 && (
+                <div className="mb-5">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#64748b" }}>Skills</h4>
+                    <div className="flex flex-wrap gap-2">
+                        {skills.map((skill) => (
+                            <span key={skill} className="text-xs px-3 py-1 rounded-lg" style={{ background: "rgba(0,230,118,0.08)", color: "#69f0ae", border: "1px solid rgba(0,230,118,0.15)" }}>
+                                {skill}
+                            </span>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Badges */}
-            <div className="mb-5">
-                <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#64748b" }}>Badges</h4>
-                <div className="flex flex-wrap gap-2">
-                    {profile.badges.map((b) => {
-                        const info = badgeData[b] || {};
-                        return (
-                            <span key={b} className="badge-chip-green text-[11px]">
-                                {info.icon} {b}
-                            </span>
-                        );
-                    })}
+            {badgeList.length > 0 && (
+                <div className="mb-5">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#64748b" }}>Badges</h4>
+                    <div className="flex flex-wrap gap-2">
+                        {badgeList.map((b) => {
+                            const info = badgeData[b] || {};
+                            return (
+                                <span key={b} className="badge-chip-green text-[11px]">
+                                    {info.icon} {b}
+                                </span>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Links */}
             <div className="flex gap-3 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
@@ -75,6 +83,14 @@ export default function ProfileCard({ profile }) {
                     </a>
                 )}
             </div>
+
+            {/* Edit Profile */}
+            <div className="mt-4 text-center">
+                <Link href="/onboarding" className="text-[10px] font-medium transition-colors" style={{ color: "#475569" }}>
+                    ✏️ Edit Profile
+                </Link>
+            </div>
         </motion.div>
     );
 }
+

@@ -1,10 +1,16 @@
 import "@/styles/globals.css";
 import { AnimatePresence, motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { onAuthStateChanged } from "firebase/auth";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ChatbotAI from "@/components/features/ChatbotAI";
 import { ThemeProvider } from "@/lib/ThemeContext";
 import { NotificationProvider, useNotifications } from "@/lib/NotificationContext";
+import { auth } from "@/lib/firebase";
+import { getUserProfile } from "@/lib/firestore";
 
 function ToastNotification() {
   const { toast } = useNotifications();
@@ -35,11 +41,68 @@ function ToastNotification() {
   );
 }
 
+// Pages that should NOT trigger the onboarding redirect
+const PUBLIC_PATHS = ["/login", "/signup", "/onboarding", "/"];
+
+function OnboardingGuard({ children }) {
+  const router = useRouter();
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    // Skip check on public pages
+    if (PUBLIC_PATHS.includes(router.pathname)) {
+      setChecked(true);
+      return;
+    }
+
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        setChecked(true);
+        return;
+      }
+
+      try {
+        const profile = await Promise.race([
+          getUserProfile(user.uid),
+          new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 3000)),
+        ]);
+
+        if (!profile || !profile.onboardingComplete) {
+          router.replace("/onboarding");
+          return;
+        }
+      } catch {
+        // Firestore error — don't block navigation
+      }
+
+      setChecked(true);
+    });
+
+    return () => unsub();
+  }, [router.pathname, router]);
+
+  if (!checked && !PUBLIC_PATHS.includes(router.pathname)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-3xl animate-pulse mb-2">⚡</div>
+          <p className="text-xs" style={{ color: "#39FF14" }}>Verifying access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return children;
+}
+
 export default function App({ Component, pageProps, router }) {
+  const MatrixRain = dynamic(() => import("@/components/effects/MatrixRain"), { ssr: false });
+
   return (
     <ThemeProvider>
       <NotificationProvider>
         <div className="cyber-grid" />
+        <MatrixRain />
         <Navbar />
         <AnimatePresence mode="wait">
           <motion.main
@@ -50,7 +113,9 @@ export default function App({ Component, pageProps, router }) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="pt-16 min-h-screen"
           >
-            <Component {...pageProps} />
+            <OnboardingGuard>
+              <Component {...pageProps} />
+            </OnboardingGuard>
           </motion.main>
         </AnimatePresence>
         <Footer />
@@ -60,3 +125,4 @@ export default function App({ Component, pageProps, router }) {
     </ThemeProvider>
   );
 }
+
